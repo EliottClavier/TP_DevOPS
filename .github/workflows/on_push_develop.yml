@@ -93,45 +93,11 @@ jobs:
           projectId: tp-devops
           target: stagingenv-tp-devops
 
-  create_artifact_and_upload_on_workflow:
-    name: Création et upload de l'artéfact du workflow courant
-    needs: deploy_on_firebase
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Upload of the artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: express_artifact
-          path: .
-
-  upload_artifact_on_npm_packages:
-    name: Upload de l'artéfact sur le gestionnaire de packages NPM
-    needs: create_artifact_and_upload_on_workflow
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12
-          registry-url: https://registry.npmjs.org/
-
-      - name: Installation des dépendances
-        run: npm ci
-
-      - name: Publication du package
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+  # Pas d'artéfacts ni d'upload de package lors d'un push sur develop
 
   notification_on_discord:
     name: Envoi d'une notification Discord
-    needs: upload_artifact_on_npm_packages
+    needs: deploy_on_firebase
     runs-on: ubuntu-latest
     steps:
       - name: Discord notification
@@ -139,4 +105,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: "@everyone Le {{ EVENT_PAYLOAD.repository.full_name }} n'a pas eu de problèmes lors de la phase de test et a bien été déployé."
+          args: "@everyone {{ EVENT_PAYLOAD.repository.full_name }} n'a pas eu de problèmes lors de la phase de test et a bien été déployé sur l'environnement de test https://stagingenv-tp-devops.web.app."
