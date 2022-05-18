@@ -151,4 +151,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: "@everyone Le {{ EVENT_PAYLOAD.repository.full_name }} n'a pas eu de problèmes lors de la phase de test et a bien été déployé sur l'environnement de production https://tp-devops.web.app."
+          args: "@everyone La version ${{ github.event.release.tag_name }} de {{ EVENT_PAYLOAD.repository.full_name }} est désormais dispnible sur https://tp-devops.web.app."
