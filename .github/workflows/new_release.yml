@@ -73,7 +73,7 @@ jobs:
           sarif_file: 'trivy-results-repository.sarif'
 
   deploy_on_firebase:
-    needs: [install_dependencies_and_unit_test, sonarcloud_test, trivy_test_docker, trivy_test_repository]
+    needs: [install_dependencies_and_unit_test, sonarcloud_test, trivy_test_dockerfile, trivy_test_repository]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
