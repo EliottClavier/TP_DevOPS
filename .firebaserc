@@ -6,7 +6,7 @@
     "tp-devops": {
       "hosting": {
         "stagingtp-devops": [
-          "tp-devops"
+          "stagingtp-devops"
         ]
       }
     }
