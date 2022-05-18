@@ -88,6 +88,19 @@ jobs:
           projectId: tp-devops
           target: stagingenv-tp-devops
 
+  create_artifact:
+    needs: deploy_on_firebase
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Upload of the artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: express_artifact
+          path: .
+
   notification_on_discord:
     needs: deploy_on_firebase
     runs-on: ubuntu-latest
