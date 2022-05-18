@@ -30,8 +30,50 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+  trivy_test_dockerfile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build de l'image provenant du Dockerfile
+        run: |
+          docker build -t docker.io/tp-devops:${{ github.sha }} .
+
+      - name: Lancement du scanner de Trivy sur l'image Docker
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'docker.io/tp-devops:${{ github.sha }}'
+          format: 'sarif'
+          output: 'trivy-results-docker.sarif'
+
+      - name: Upload des résultats du scan sur l'onglet Sécurité de GitHub
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: 'trivy-results-docker.sarif'
+
+  trivy_test_repository:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Lancement du scanner de Trivy sur le repository
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-results-repository.sarif'
+          severity: 'CRITICAL'
+
+      - name: Upload des résultats du scan sur l'onglet Sécurité de GitHub
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: 'trivy-results-repository.sarif'
+
   deploy_on_firebase:
-    needs: [install_dependencies_and_unit_test, sonarcloud_test]
+    needs: [install_dependencies_and_unit_test, sonarcloud_test, trivy_test_docker, trivy_test_repository]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
