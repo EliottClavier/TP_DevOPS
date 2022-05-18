@@ -4,19 +4,24 @@ name: Déploiement sur Firebase Hosting, environnement de production
     types:
       - published
 jobs:
-  build_and_unit_test:
+  install_dependencies:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+        - name: Checkout
+          uses: actions/checkout@v2
 
-      - name: Installation des packages
-        run: npm ci
+        - name: Installation des packages
+          run: npm ci
 
+  unit_test:
+    needs: install_dependencies
+    runs-on: ubuntu-latest
+    steps:
       - name: Lancement des tests unitaires
         run: npm test
 
   sonarcloud_test:
+    needs: unit_test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,6 +36,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   deploy_on_firebase:
+    needs: sonarcloud_test
     runs-on: ubuntu-latest
     steps:
       - name: Déploiement sur l'environnement de production
