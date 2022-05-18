@@ -16,9 +16,6 @@ jobs:
       - name: Lancement des tests
         run: npm test
 
-      - name: Lancement de l'application
-        run: npm start
-
       - name: Déploiement sur l'environnement de Staging
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
