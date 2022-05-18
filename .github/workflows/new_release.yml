@@ -93,8 +93,8 @@ jobs:
           projectId: tp-devops
           target: tp-devops
 
-  create_artifact:
-    name: Création de l'artéfact du workflow courant
+  create_artifact_and_upload_on_workflow:
+    name: Création et upload de l'artéfact du workflow courant
     needs: deploy_on_firebase
     runs-on: ubuntu-latest
     steps:
@@ -106,6 +106,27 @@ jobs:
         with:
           name: express_artifact
           path: .
+
+  upload_artifact_on_npm_packages:
+    name: Upload de l'artéfact sur le gestionnaire de packages NPM
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup node
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+
+      - name: Installation des dépendances
+        run: npm ci
+
+      - name: Publication du package
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   notification_on_discord:
     name: Envoi d'une notification Discord
