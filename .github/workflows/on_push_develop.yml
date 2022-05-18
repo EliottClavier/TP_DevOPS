@@ -4,7 +4,7 @@ name: Déploiement sur Firebase Hosting, environnement de Staging
     branches:
       - develop
 jobs:
-  install_dependencies:
+  install_dependencies_and_unit_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -13,15 +13,11 @@ jobs:
       - name: Installation des packages
         run: npm ci
 
-  unit_test:
-    needs: install_dependencies
-    runs-on: ubuntu-latest
-    steps:
       - name: Lancement des tests unitaires
         run: npm test
 
   sonarcloud_test:
-    needs: unit_test
+    needs: install_dependencies_and_unit_test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -36,7 +32,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   deploy_on_firebase:
-    needs: sonarcloud_test
+    needs: [install_dependencies_and_unit_test, sonarcloud_test]
     runs-on: ubuntu-latest
     steps:
       - name: Déploiement sur l'environnement de Staging
