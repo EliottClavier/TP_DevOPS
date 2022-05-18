@@ -7,6 +7,9 @@
       "hosting": {
         "stagingenv-tp-devops": [
           "stagingenv-tp-devops"
+        ],
+        "tp-devops": [
+          "tp-devops"
         ]
       }
     }
