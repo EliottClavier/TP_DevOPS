@@ -84,6 +84,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Renommage fichier staging.html en index.html
+        run: cd public && mv staging.html index.html
+
       - name: Déploiement sur l'environnement de Staging
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -93,19 +96,7 @@ jobs:
           projectId: tp-devops
           target: stagingenv-tp-devops
 
-  create_artifact:
-    name: Création de l'artéfact du workflow courant
-    needs: deploy_on_firebase
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Upload of the artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: express_artifact
-          path: .
+  # Pas d'artéfacts ni d'upload de package lors d'un push sur develop
 
   notification_on_discord:
     name: Envoi d'une notification Discord
@@ -117,4 +108,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: "@everyone Le {{ EVENT_PAYLOAD.repository.full_name }} n'a pas eu de problèmes lors de la phase de test et a bien été déployé."
+          args: "@everyone {{ EVENT_PAYLOAD.repository.full_name }} n'a pas eu de problèmes lors de la phase de test et a bien été déployé sur l'environnement de test https://stagingenv-tp-devops.web.app."
