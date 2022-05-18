@@ -7,6 +7,7 @@ jobs:
   build_test_deploy:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Installation de firebase tools
         run: |
           sudo npm install -g firebase-tools
