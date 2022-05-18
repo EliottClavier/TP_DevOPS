@@ -84,6 +84,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Renommage fichier staging.html en index.html
+        run: cd public && mv staging.html index.html
+
       - name: Déploiement sur l'environnement de Staging
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
