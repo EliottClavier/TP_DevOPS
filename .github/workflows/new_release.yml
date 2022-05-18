@@ -42,3 +42,14 @@ jobs:
           channelId: live
           projectId: tp-devops
           target: tp-devops
+
+  notification_on_discord:
+    needs: deploy_on_firebase
+    runs-on: ubuntu-latest
+    steps:
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: "@everyone Le {{ EVENT_PAYLOAD.repository.full_name }} n'a pas eu de problèmes lors de la phase de test et a bien été déployé par des bgs."
