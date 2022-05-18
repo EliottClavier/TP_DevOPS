@@ -109,13 +109,14 @@ jobs:
 
   upload_artifact_on_npm_packages:
     name: Upload de l'artéfact sur le gestionnaire de packages NPM
+    needs: create_artifact_and_upload_on_workflow
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Setup node
-      - uses: actions/setup-node@v1
+        uses: actions/setup-node@v1
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
@@ -124,13 +125,13 @@ jobs:
         run: npm ci
 
       - name: Publication du package
-      - run: npm publish --access public
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   notification_on_discord:
     name: Envoi d'une notification Discord
-    needs: deploy_on_firebase
+    needs: upload_artifact_on_npm_packages
     runs-on: ubuntu-latest
     steps:
       - name: Discord notification
