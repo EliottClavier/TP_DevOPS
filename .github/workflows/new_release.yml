@@ -127,6 +127,9 @@ jobs:
       - name: Installation des dépendances
         run: npm ci
 
+      - name: Création d'une nouvelle version
+        run: npm version ${{ github.event.release.tag_name }}
+
       - name: Publication du package
         run: npm publish --access public
         env:
