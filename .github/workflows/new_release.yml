@@ -124,6 +124,12 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
 
+      - name: Setup credentials git name
+        run: git config --global user.name "EliottClavier"
+
+      - name: Setup credentials git email
+        run: git config --global user.email "clavier.eliott.el@gmail.com"
+
       - name: Installation des dépendances
         run: npm ci
 
