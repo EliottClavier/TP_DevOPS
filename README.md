@@ -1,12 +1,14 @@
-# project_DevOps
+# TP DevOPS
 
-first : clone the project
+Vous trouverez dans ce repository GitHub deux workflows permettant le déploiement sur un environnement de test "on push on develop" et le déploiement sur un environnement de production "on new release".
 
-second : cd project_DevOps puis npm i
+## Environnements
 
-thrid : launch test unit with npm run test 
+Les deux environnements sont hébergés sur Firebase hosting:
+  - Environnement de test: https://stagingenv-tp-devops.web.app
+  - Environnement de production: https://tp-devops.web.app
 
+## Résumé du projet
 
-AIDE POUR GITHUB : https://github.blog/2022-02-02-build-ci-cd-pipeline-github-actions-four-steps/
-
-AIDE POUR GITLAB : https://blog.eleven-labs.com/fr/introduction-gitlab-ci/ 
+Le résumé du projet se trouve à l'adresse suivante:
+  - https://flolpb.github.io
