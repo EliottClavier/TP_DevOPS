@@ -4,7 +4,7 @@ name: Déploiement sur Firebase Hosting, environnement de Staging
     branches:
       - develop
 jobs:
-  build_test_deploy:
+  build_and_unit_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -13,9 +13,26 @@ jobs:
       - name: Installation des packages
         run: npm ci
 
-      - name: Lancement des tests
+      - name: Lancement des tests unitaires
         run: npm test
 
+  sonarcloud_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  deploy_on_firebase:
+    runs-on: ubuntu-latest
+    steps:
       - name: Déploiement sur l'environnement de Staging
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
