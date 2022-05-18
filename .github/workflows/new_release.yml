@@ -115,7 +115,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup node
-      - uses: actions/setup-node@v1
+        uses: actions/setup-node@v1
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
@@ -124,7 +124,7 @@ jobs:
         run: npm ci
 
       - name: Publication du package
-      - run: npm publish --access public
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
