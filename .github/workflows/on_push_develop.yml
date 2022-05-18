@@ -23,4 +23,4 @@ jobs:
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_TP_DEVOPS }}"
           channelId: live
           projectId: tp-devops
-          target: stagingtp-devops
+          target: stagingenv-tp-devops

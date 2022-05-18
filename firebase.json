@@ -12,7 +12,7 @@
     },
     {
       "public": "public",
-      "target": "stagingtp-devops",
+      "target": "stagingenv-tp-devops",
       "ignore": [
         "firebase.json",
         "**/.*",

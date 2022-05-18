@@ -5,8 +5,8 @@
   "targets": {
     "tp-devops": {
       "hosting": {
-        "stagingtp-devops": [
-          "stagingtp-devops"
+        "stagingenv-tp-devops": [
+          "stagingenv-tp-devops"
         ]
       }
     }
