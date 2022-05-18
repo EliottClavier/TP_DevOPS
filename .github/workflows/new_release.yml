@@ -10,8 +10,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Build de l'application
-        run: npm ci && npm run build
+      - name: Installation des packages
+        run: npm ci
+
+      - name: Lancement des tests
+        run: npm test
+
+      - name: Lancement de l'application
+        run: npm start
 
       - name: Déploiement sur l'environnement de Staging
         uses: FirebaseExtended/action-hosting-deploy@v0
