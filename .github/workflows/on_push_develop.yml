@@ -40,17 +40,31 @@ jobs:
         run: |
           docker build -t docker.io/tp-devops:${{ github.sha }} .
 
-      - name: Lancement du scanner de Trivy
+      - name: Lancement du scanner de Trivy sur l'image Docker
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'docker.io/tp-devops:${{ github.sha }}'
           format: 'sarif'
-          output: 'trivy-results.sarif'
+          output: 'trivy-results-docker.sarif'
 
       - name: Upload des résultats du scan sur l'onglet Sécurité de GitHub
         uses: github/codeql-action/upload-sarif@v1
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: 'trivy-results-docker.sarif'
+
+      - name: Lancement du scanner de Trivy sur le repository
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-results-repository.sarif'
+          severity: 'CRITICAL'
+
+      - name: Upload des résultats du scan sur l'onglet Sécurité de GitHub
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: 'trivy-results-repository.sarif'
 
   deploy_on_firebase:
     needs: [install_dependencies_and_unit_test, sonarcloud_test, trivy_test]
