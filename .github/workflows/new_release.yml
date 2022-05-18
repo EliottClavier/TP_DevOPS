@@ -85,7 +85,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Renommage fichier production.html en index.html
-        run: cd public && mv staging.html index.html
+        run: cd public && mv production.html index.html
 
       - name: Déploiement sur l'environnement de production
         uses: FirebaseExtended/action-hosting-deploy@v0
