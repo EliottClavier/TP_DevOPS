@@ -1,0 +1,21 @@
+name: Deploy to Firebase Hosting on PR
+'on':
+  release:
+    types:
+      - published
+jobs:
+  build_test_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Installation de firebase tools
+        run: |
+          sudo npm install -g firebase-tools
+          firebase use tp-devops --token ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TP_DEVOPS }}
+
+      - name: Build de l'application
+      - uses: actions/checkout@v2
+      - run: npm ci && npm run build
+
+      - name: Déploiement sur l'environnement de Staging
+        run: firebase deploy --only hosting:tp-devops --non-interactive --token ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TP_DEVOPS }} -m "RunID ${{ github.run_id }} Commit SHA ${{ github.sha }}"
+
