@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "tp-devops"
+  },
+  "targets": {
+    "tp-devops": {
+      "hosting": {
+        "stagingtp-devops": [
+          "tp-devops"
+        ]
+      }
+    }
   }
 }
